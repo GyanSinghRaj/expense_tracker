@@ -1,0 +1,55 @@
+
+# Flutter & Dart related files
+**/build/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+*.dart_tool/
+*.swp
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-version
+
+# IntelliJ / Android Studio
+*.iml
+.idea/
+.idea/*
+*.ipr
+*.iws
+.idea/modules.xml
+.idea/workspace.xml
+.idea/.name
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# macOS files
+.DS_Store
+
+# Linux files
+.snap/
+
+# Windows files
+Thumbs.db
+*.class
+
+# Android
+**/android/app/debug.keystore
+**/android/local.properties
+
+# Generated files
+*.log
+*.tmp
+*.temp
+*.lock
+*.bak
+
+# Firebase (if used)
+**/ios/Runner/GoogleService-Info.plist
+**/android/app/google-services.json
