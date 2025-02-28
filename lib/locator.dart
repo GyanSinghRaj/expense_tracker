@@ -1,26 +1,51 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expense_tracker/features/expense/data/datasources/expense_remote_datasource.dart';
-import 'package:expense_tracker/features/expense/data/repositories/expense_repository_impl.dart';
-import 'package:expense_tracker/features/expense/domain/repositories/expense_repository.dart';
-import 'package:expense_tracker/features/expense/domain/usecases/fetch_expense.dart';
-import 'package:expense_tracker/features/expense/presentation/blocs/expense_bloc.dart';
+import 'package:expense_tracker/core/network/dio_client.dart';
+import 'package:expense_tracker/features/data/data_sources/auth_api_service.dart';
+import 'package:expense_tracker/features/data/data_sources/auth_local_service.dart';
+import 'package:expense_tracker/features/data/repository/auth_repository_impl.dart';
+import 'package:expense_tracker/features/domain/repositories/auth_repository.dart';
+import 'package:expense_tracker/features/domain/usecases/user/get_user.dart';
+import 'package:expense_tracker/features/domain/usecases/user/is_logged_in.dart';
+import 'package:expense_tracker/features/domain/usecases/user/log_out.dart';
+import 'package:expense_tracker/features/domain/usecases/user/sign_in.dart';
+import 'package:expense_tracker/features/domain/usecases/user/sign_up.dart';
+
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
 
-void init() {
-  // Firebase
-  sl.registerLazySingleton(() => FirebaseFirestore.instance);
+void setupServiceLocator() {
+  sl.registerSingleton<DioClient>(DioClient());
 
-  // Data layer
-  sl.registerLazySingleton<ExpenseRemoteDataSource>(
-      () => ExpenseRemoteDataSourceImpl(sl()));
-  sl.registerLazySingleton<ExpenseRepository>(
-      () => ExpenseRepositoryImpl(sl()));
+  // Services
+  sl.registerSingleton<AuthApiService>(AuthApiServiceImpl());
+  // sl.registerSingleton<NoteApiService>(NoteApiServiceImpl());
 
-  // Use cases
-  sl.registerLazySingleton(() => FetchExpenses(sl()));
+  sl.registerSingleton<AuthLocalService>(AuthLocalServiceImpl());
 
-  // BLoC
-  sl.registerFactory(() => ExpenseBloc(sl()));
+  // Repositories
+  sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
+  // sl.registerSingleton<NoteRepository>(NoteRepositoryImpl());
+
+  // Usecases
+  sl.registerSingleton<SignupUseCase>(SignupUseCase());
+
+  sl.registerSingleton<IsLoggedInUseCase>(IsLoggedInUseCase());
+
+  sl.registerSingleton<GetUserUseCase>(GetUserUseCase());
+
+  sl.registerSingleton<LogoutUseCase>(LogoutUseCase());
+
+  sl.registerSingleton<SigninUseCase>(SigninUseCase());
+  //noteusecase
+  // sl.registerSingleton<DeleteNote>(DeleteNote());
+  // sl.registerSingleton<CreateNote>(CreateNote());
+  // sl.registerSingleton<UpdateNote>(UpdateNote());
+  // sl.registerSingleton<GetNotes>(GetNotes());
+
+  // sl.registerFactory(() => NoteBloc(
+  //       getNotes: sl(),
+  //       addNote: sl(),
+  //       updateNote: sl(),
+  //       deleteNote: sl(),
+  //     ));
 }
