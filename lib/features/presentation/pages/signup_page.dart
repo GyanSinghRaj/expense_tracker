@@ -1,6 +1,5 @@
 import 'package:expense_tracker/features/data/models/signup_req_params.dart';
 import 'package:expense_tracker/features/domain/usecases/user/sign_up.dart';
-import 'package:expense_tracker/features/presentation/pages/home_page.dart';
 import 'package:expense_tracker/features/presentation/pages/old/home_page.dart';
 import 'package:expense_tracker/features/presentation/pages/signin_page.dart';
 import 'package:expense_tracker/features/presentation/widgets/basic_app_button.dart';
