@@ -1,11 +1,11 @@
 class ApiUrls {
-  // static const baseURL = 'http://192.168.1.70:5000/';
+  static const baseURL = 'http://192.168.100.126:8000/';
 
-  static const baseURL = 'http://192.168.1.85:5000/';
-  // static const baseURL = 'http://192.168.100.126:5000/';
+  // static const baseURL = 'http://192.168.1.85:8000/';
+  // static const baseURL = 'http://192.168.100.126:8000/';
 
   static const register = '${baseURL}api/users/register';
-  static const userProfile = '${baseURL}api/users/userProfile';
+  static const userProfile = '${baseURL}api/users/profile';
   static const login = '${baseURL}api/users/login';
 
   static const createBudget = '${baseURL}api/Budgets/';

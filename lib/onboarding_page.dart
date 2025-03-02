@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:typewritertext/typewritertext.dart';
+// import 'package:typewritertext/typewritertext.dart';
 
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key});

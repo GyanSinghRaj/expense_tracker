@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
+import 'package:expense_tracker/core/errors/failures.dart';
 import 'package:expense_tracker/features/data/data_sources/auth_api_service.dart';
 import 'package:expense_tracker/features/data/models/signup_req_params.dart';
 import 'package:expense_tracker/features/data/models/user_model.dart';
@@ -12,17 +12,21 @@ import '../models/signin_req_params.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   @override
-  Future<Either> signup(SignupReqParams signupReq) async {
-    Either result = await sl<AuthApiService>().signup(signupReq);
-    return result.fold((error) {
-      return Left(error);
-    }, (data) async {
-      Response response = data;
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      sharedPreferences.setString('token', response.data['token']);
-      return Right(response);
-    });
+  Future<Either<Failure, void>> signup(SignupReqParams signupReq) async {
+    try {
+      final result = await sl<AuthApiService>().signup(signupReq);
+      return result.fold(
+        (error) => Left(ServerFailure(error)),
+        (data) async {
+          final response = data ;
+          final sharedPreferences = await SharedPreferences.getInstance();
+          sharedPreferences.setString('token', response.data['token']);
+          return const Right(null);
+        },
+      );
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override
@@ -31,37 +35,56 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either> getUser() async {
-    Either result = await sl<AuthApiService>().getUser();
-    return result.fold((error) {
-      return Left(error);
-    }, (data) {
-      Response response = data;
-      if (response.data == null) {
-        return Left("No user data found.");
-      }
-
-      var userModel = UserModel.fromMap(response.data);
-      return Right(userModel.toEntity());
-    });
+  Future<Either<Failure, UserModel>> getUser() async {
+    try {
+      final result = await sl<AuthApiService>().getUser();
+      return result.fold(
+        (error) => Left(ServerFailure(error)),
+        (data) {
+          final response = data ;
+          if (response.data == null) {
+            return Left(ServerFailure("No user data found."));
+          }
+          if (response.data is! Map<String, dynamic>) {
+            return Left(ServerFailure("Unexpected response format"));
+          }
+          final userModel = UserModel.fromMap(response.data);
+          return Right(userModel);
+        },
+      );
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override
-  Future<Either> logout() async {
-    return await sl<AuthLocalService>().logout();
+  Future<Either<Failure, void>> logout() async {
+    try {
+      final result = await sl<AuthLocalService>().logout();
+      return result.fold(
+        (error) => Left(ServerFailure(error)),
+        (_) => const Right(null),
+      );
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override
-  Future<Either> signin(SigninReqParams signinReq) async {
-    Either result = await sl<AuthApiService>().signin(signinReq);
-    return result.fold((error) {
-      return Left(error);
-    }, (data) async {
-      Response response = data;
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      sharedPreferences.setString('token', response.data['token']);
-      return Right(response);
-    });
+  Future<Either<Failure, void>> signin(SigninReqParams signinReq) async {
+    try {
+      final result = await sl<AuthApiService>().signin(signinReq);
+      return result.fold(
+        (error) => Left(ServerFailure(error)),
+        (data) async {
+          final response = data ;
+          final sharedPreferences = await SharedPreferences.getInstance();
+          sharedPreferences.setString('token', response.data['token']);
+          return const Right(null);
+        },
+      );
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 }

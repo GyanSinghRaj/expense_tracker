@@ -1,7 +1,12 @@
-
+import 'package:expense_tracker/features/domain/usecases/user/log_out.dart';
+import 'package:expense_tracker/features/presentation/blocs/user/user_display_cubit.dart';
+import 'package:expense_tracker/features/presentation/blocs/user/user_display_state.dart';
 import 'package:expense_tracker/features/presentation/pages/old/expense_.page.dart';
 import 'package:expense_tracker/features/presentation/pages/old/login_page.dart';
+import 'package:expense_tracker/features/presentation/widgets/button_cubit/button_cubit.dart';
+import 'package:expense_tracker/locator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -72,7 +77,7 @@ class CustomDrawer extends StatelessWidget {
                   icon: Icons.logout,
                   text: 'Logout',
                   color: Colors.red,
-                  onTap: () => _showLogoutDialog(context),
+                  onTap: () {context.read<ButtonStateCubit>().excute(usecase: sl<LogoutUseCase>());}
                 ),
               ],
             ),
@@ -83,22 +88,38 @@ class CustomDrawer extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
-    return UserAccountsDrawerHeader(
-      accountName: Text(
-        "John Doe",
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-      ),
-      accountEmail: Text("johndoe@email.com"),
-      currentAccountPicture: CircleAvatar(
-        backgroundImage: AssetImage('assets/profile.jpg'),
-      ),
-      decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.6),
-        image: DecorationImage(
-          image: AssetImage('assets/drawer_bg.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
+    return BlocBuilder<UserDisplayCubit, UserDisplayState>(
+      builder: (context, state) {
+        if (state is UserLoading) {
+          return const CircularProgressIndicator();
+        }
+        if (state is UserLoaded) {
+          return UserAccountsDrawerHeader(
+            accountName: Text(
+              state.userModel.username,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            accountEmail: Text(state.userModel.email),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage: AssetImage('assets/profile.jpg'),
+            ),
+            decoration: BoxDecoration(
+              color: Colors.blue.withOpacity(0.6),
+              image: DecorationImage(
+                image: AssetImage('assets/drawer_bg.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        }
+        if (state is LoadUserFailure) {
+          return Text(
+            state.errorMessage,
+            style: TextStyle(color: Colors.red),
+          );
+        }
+        return Container();
+      },
     );
   }
 

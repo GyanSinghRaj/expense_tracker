@@ -3,7 +3,6 @@ import 'package:expense_tracker/features/presentation/blocs/user/user_display_st
 import 'package:expense_tracker/locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class UserDisplayCubit extends Cubit<UserDisplayState> {
   UserDisplayCubit() : super(UserLoading());
 
@@ -13,7 +12,7 @@ class UserDisplayCubit extends Cubit<UserDisplayState> {
     result.fold((error) {
       emit(LoadUserFailure(errorMessage: error));
     }, (data) {
-      emit(UserLoaded(userEntity: data));
+      emit(UserLoaded(userModel: data));
     });
   }
 }
