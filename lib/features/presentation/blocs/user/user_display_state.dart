@@ -1,5 +1,4 @@
 import 'package:expense_tracker/features/data/models/user_model.dart';
-import 'package:expense_tracker/features/domain/entities/user_entity.dart';
 
 abstract class UserDisplayState {}
 

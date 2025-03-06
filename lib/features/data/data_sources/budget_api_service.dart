@@ -85,7 +85,9 @@ class BudgetApiServiceImpl extends BudgetApiService {
 
       return Right(response.data);
     } on DioException catch (e) {
-      return Left(e.response?.data['message'] ?? 'An error occurred');
+      return Left(e.response?.data?['message']?.toString() ??
+          e.message ??
+          "An error occurred");
     }
   }
 

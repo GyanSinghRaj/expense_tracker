@@ -18,10 +18,10 @@ class AuthRepositoryImpl extends AuthRepository {
       return result.fold(
         (error) => Left(ServerFailure(error)),
         (data) async {
-          final response = data ;
+          final response = data;
           final sharedPreferences = await SharedPreferences.getInstance();
           sharedPreferences.setString('token', response.data['token']);
-          return const Right(null);
+          return Right(response);
         },
       );
     } catch (e) {
@@ -41,7 +41,7 @@ class AuthRepositoryImpl extends AuthRepository {
       return result.fold(
         (error) => Left(ServerFailure(error)),
         (data) {
-          final response = data ;
+          final response = data;
           if (response.data == null) {
             return Left(ServerFailure("No user data found."));
           }
@@ -77,7 +77,7 @@ class AuthRepositoryImpl extends AuthRepository {
       return result.fold(
         (error) => Left(ServerFailure(error)),
         (data) async {
-          final response = data ;
+          final response = data;
           final sharedPreferences = await SharedPreferences.getInstance();
           sharedPreferences.setString('token', response.data['token']);
           return const Right(null);

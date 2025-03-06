@@ -1,7 +1,10 @@
 import 'package:expense_tracker/features/domain/usecases/user/log_out.dart';
 import 'package:expense_tracker/features/presentation/blocs/user/user_display_cubit.dart';
 import 'package:expense_tracker/features/presentation/blocs/user/user_display_state.dart';
-import 'package:expense_tracker/features/presentation/pages/old/expense_.page.dart';
+import 'package:expense_tracker/features/presentation/pages/old/budget_page.dart';
+import 'package:expense_tracker/features/presentation/pages/old/categories.dart';
+import 'package:expense_tracker/features/presentation/pages/old/expense_pages/expense_page.dart';
+import 'package:expense_tracker/features/presentation/pages/old/home_page.dart';
 import 'package:expense_tracker/features/presentation/pages/old/login_page.dart';
 import 'package:expense_tracker/features/presentation/widgets/button_cubit/button_cubit.dart';
 import 'package:expense_tracker/locator.dart';
@@ -74,11 +77,14 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 Divider(),
                 _drawerItem(
-                  icon: Icons.logout,
-                  text: 'Logout',
-                  color: Colors.red,
-                  onTap: () {context.read<ButtonStateCubit>().excute(usecase: sl<LogoutUseCase>());}
-                ),
+                    icon: Icons.logout,
+                    text: 'Logout',
+                    color: Colors.red,
+                    onTap: () {
+                      context
+                          .read<ButtonStateCubit>()
+                          .excute(usecase: sl<LogoutUseCase>());
+                    }),
               ],
             ),
           ),
@@ -141,9 +147,17 @@ class CustomDrawer extends StatelessWidget {
     Navigator.pop(context);
     switch (route) {
       case '/home':
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
       case '/profile':
       case '/budget':
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => BudgetPage()));
       case '/reports':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CategoriesPage()),
+        );
       case '/appearance':
       case '/settings':
       case '/notifications':

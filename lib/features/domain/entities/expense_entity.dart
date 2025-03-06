@@ -1,20 +1,25 @@
-class Expense {
-  final String id;
+// import 'package:expense_tracker/features/data/models/expense_model.dart';
+
+class ExpenseEntity {
+  final String expenseId;
   final String userId;
   final String categoryId;
   final double amount;
   final DateTime date;
+  final DateTime updatedAt;
+  final DateTime createdAt;
   final String description;
-  final String? billImage;
+  final String? billImage; // Nullable field
 
-  Expense({
-    required this.id,
+  ExpenseEntity({
+    required this.expenseId,
     required this.userId,
     required this.categoryId,
     required this.amount,
     required this.date,
     required this.description,
-    this.billImage,
+    required this.createdAt,
+    required this.updatedAt,
+    this.billImage, // Nullable field
   });
-  
 }

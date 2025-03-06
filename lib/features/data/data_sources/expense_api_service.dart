@@ -2,8 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:expense_tracker/core/constants/api_urls.dart';
 import 'package:expense_tracker/core/network/dio_client.dart';
-import 'package:expense_tracker/features/data/models/expese_model.dart';
-
+import 'package:expense_tracker/features/data/models/expense_model.dart';
 import 'package:expense_tracker/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,7 +34,9 @@ class ExpenseApiServiceImpl extends ExpenseApiService {
 
       return Right(response.data);
     } on DioException catch (e) {
-      return Left(e.response?.data['message'] ?? "An error occurred");
+      return Left(e.response?.data?['message']?.toString() ??
+          e.message ??
+          "An error occurred");
     }
   }
 
@@ -49,10 +50,12 @@ class ExpenseApiServiceImpl extends ExpenseApiService {
         ApiUrls.getExpenses,
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
-
+      print(response.data);
       return Right(response.data);
     } on DioException catch (e) {
-      return Left(e.response?.data['message'] ?? "An error occurred");
+      return Left(e.response?.data?['message']?.toString() ??
+          e.message ??
+          "An error occurred");
     }
   }
 
@@ -63,14 +66,16 @@ class ExpenseApiServiceImpl extends ExpenseApiService {
       if (token == null) return Left("Token not found");
 
       final response = await sl<DioClient>().put(
-        '${ApiUrls.updateExpense}/${expense.id}',
+        '${ApiUrls.updateExpense}/${expense.expenseId}',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
         data: expense.toMap(),
       );
 
       return Right(response.data);
     } on DioException catch (e) {
-      return Left(e.response?.data['message'] ?? "An error occurred");
+      return Left(e.response?.data?['message']?.toString() ??
+          e.message ??
+          "An error occurred");
     }
   }
 
@@ -87,7 +92,9 @@ class ExpenseApiServiceImpl extends ExpenseApiService {
 
       return Right(null);
     } on DioException catch (e) {
-      return Left(e.response?.data['message'] ?? "An error occurred");
+      return Left(e.response?.data?['message']?.toString() ??
+          e.message ??
+          "An error occurred");
     }
   }
 
@@ -104,7 +111,9 @@ class ExpenseApiServiceImpl extends ExpenseApiService {
 
       return Right(response.data);
     } on DioException catch (e) {
-      return Left(e.response?.data['message'] ?? "An error occurred");
+      return Left(e.response?.data?['message']?.toString() ??
+          e.message ??
+          "An error occurred");
     }
   }
 }

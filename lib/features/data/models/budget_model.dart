@@ -8,23 +8,32 @@ class BudgetModel extends BudgetEntity {
     required DateTime startDate,
     required DateTime endDate,
     required String categoryId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) : super(
-          budgetId: budgetId,
-          amount: amount,
-          userId: userId,
-          startDate: startDate,
-          endDate: endDate,
-          categoryId: categoryId,
-        ) {}
+            budgetId: budgetId,
+            amount: amount,
+            userId: userId,
+            startDate: startDate,
+            endDate: endDate,
+            categoryId: categoryId,
+            createdAt: createdAt,
+            updatedAt: updatedAt);
 
   factory BudgetModel.fromMap(Map<String, dynamic> map) {
     return BudgetModel(
-     budgetId: map['budgetId'] as String,
-      amount: map['amount'] as double,
-      userId: map['userId'] as String,
-      startDate: DateTime.parse(map['startDate'] as String),
-      endDate: DateTime.parse(map['endDate'] as String),
-      categoryId: map['categoryId'] as String,
+      budgetId: map['budgetId']?.toString() ?? "", // Ensure String
+      amount: (map['amount'] as num).toDouble(), // Convert int/double safely
+      userId: map['userId']?.toString() ?? "", // Ensure String
+      startDate:
+          DateTime.parse(map['startDate'] ?? ""), // Safe DateTime parsing
+      endDate: DateTime.parse(map['endDate'] ?? ""),
+      createdAt:
+          DateTime.parse(map['createdAt'] ?? ""), // Safe DateTime parsing
+      updatedAt:
+          DateTime.parse(map['updatedAt'] ?? ""), // Safe DateTime parsing
+
+      categoryId: map['categoryId']?.toString() ?? "", // Ensure String
     );
   }
 
@@ -36,17 +45,21 @@ class BudgetModel extends BudgetEntity {
       'startDate': startDate.toIso8601String(),
       'endDate': endDate.toIso8601String(),
       'categoryId': categoryId,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
     };
   }
 
   factory BudgetModel.fromJson(Map<String, dynamic> json) {
     return BudgetModel(
-      budgetId: json['budgetId'] as String,
-      amount: json['amount'] as double,
-      userId: json['userId'] as String,
-      startDate: DateTime.parse(json['startDate'] as String),
-      endDate: DateTime.parse(json['endDate'] as String),
-      categoryId: json['categoryId'] as String,
+      budgetId: json['_id']?.toString() ?? "",
+      amount: (json['amount'] as num).toDouble(),
+      userId: json['userId']?.toString() ?? "",
+      startDate: DateTime.parse(json['startDate']),
+      endDate: DateTime.parse(json['endDate']),
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      categoryId: json['categoryId']?.toString() ?? "",
     );
   }
 
@@ -58,6 +71,8 @@ class BudgetModel extends BudgetEntity {
       'startDate': startDate.toIso8601String(),
       'endDate': endDate.toIso8601String(),
       'categoryId': categoryId,
+      'createdat': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 }

@@ -12,7 +12,7 @@ class SignupReqParams {
     return <String, dynamic>{
       'email': email,
       'password': password,
-      'username': username,
+      'username': username
     };
   }
 }

@@ -5,6 +5,7 @@ import 'package:expense_tracker/features/domain/repositories/budget_repository.d
 
 import 'package:expense_tracker/locator.dart';
 class CreateBudget implements UseCase<Either, BudgetModel> {
+  
   @override
   Future<Either> call({BudgetModel? param}) async {
     // Call the updateBudget method from the repository

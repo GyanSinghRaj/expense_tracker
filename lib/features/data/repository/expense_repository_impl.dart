@@ -1,8 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:expense_tracker/core/errors/failures.dart';
 import 'package:expense_tracker/features/data/data_sources/expense_api_service.dart';
-
-import 'package:expense_tracker/features/data/models/expese_model.dart';
+import 'package:expense_tracker/features/data/models/expense_model.dart';
 import 'package:expense_tracker/features/domain/repositories/expense_repository.dart';
 import 'package:expense_tracker/locator.dart';
 
@@ -10,7 +9,8 @@ class ExpenseRepositoryImpl extends ExpenseRepository {
   final ExpenseApiService expenseApiService = sl<ExpenseApiService>();
 
   @override
-  Future<Either<Failure, ExpenseModel>> createExpense(ExpenseModel expense) async {
+  Future<Either<Failure, ExpenseModel>> createExpense(
+      ExpenseModel expense) async {
     try {
       final result = await expenseApiService.createExpense(expense);
       return result.fold(
@@ -31,8 +31,9 @@ class ExpenseRepositoryImpl extends ExpenseRepository {
         (data) {
           try {
             if (data is List) {
-              final List<ExpenseModel> expenses =
-                  data.map((expense) => ExpenseModel.fromJson(expense)).toList();
+              final List<ExpenseModel> expenses = data
+                  .map((expense) => ExpenseModel.fromJson(expense))
+                  .toList();
               return Right(expenses);
             } else {
               return Left(ServerFailure('Response data is not a list'));
@@ -60,7 +61,7 @@ class ExpenseRepositoryImpl extends ExpenseRepository {
     }
   }
 
-  @override
+@override
   Future<Either<Failure, void>> deleteExpense(String expenseId) async {
     try {
       final result = await expenseApiService.deleteExpense(expenseId);
@@ -74,7 +75,8 @@ class ExpenseRepositoryImpl extends ExpenseRepository {
   }
 
   @override
-  Future<Either<Failure, ExpenseModel>> updateExpense(ExpenseModel expense) async {
+  Future<Either<Failure, ExpenseModel>> updateExpense(
+      ExpenseModel expense) async {
     try {
       final result = await expenseApiService.updateExpense(expense);
       return result.fold(

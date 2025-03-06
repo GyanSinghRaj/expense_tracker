@@ -1,7 +1,7 @@
 import 'package:expense_tracker/features/presentation/blocs/user/user_display_cubit.dart';
 import 'package:expense_tracker/features/presentation/blocs/user/user_display_state.dart';
 import 'package:expense_tracker/features/presentation/pages/old/signup_page.dart';
-import 'package:expense_tracker/features/presentation/widgets/add_expense.dart';
+import 'package:expense_tracker/features/presentation/pages/old/expense_pages/add_expense.dart';
 import 'package:expense_tracker/features/presentation/widgets/button_cubit/button_cubit.dart';
 import 'package:expense_tracker/features/presentation/widgets/button_cubit/button_state.dart';
 import 'package:expense_tracker/features/presentation/widgets/custom_Drawer.dart';

@@ -1,5 +1,5 @@
 abstract class UseCase<Type, Param> {
-  Future<Type> call({Param? param});
+  Future<Type> call({Param param});
 }
 
 class NoParams {}
