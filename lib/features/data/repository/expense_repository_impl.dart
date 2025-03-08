@@ -61,7 +61,34 @@ class ExpenseRepositoryImpl extends ExpenseRepository {
     }
   }
 
-@override
+  @override
+  Future<Either<Failure, List<ExpenseModel>>> getExpenseByCategory(
+      String categoryId) async {
+    try {
+      final result = await expenseApiService.getExpenseById(categoryId);
+      return result.fold(
+        (error) => Left(ServerFailure(error)),
+        (data){
+          try {
+            if (data is List) {
+              final List<ExpenseModel> expenses = data
+                  .map((expense) => ExpenseModel.fromJson(expense))
+                  .toList();
+              return Right(expenses);
+            } else {
+              return Left(ServerFailure('Response data is not a list'));
+            }
+          } catch (e) {
+            return Left(ServerFailure('Failed to parse expenses: $e'));
+          }
+        },
+      );
+    } catch (e) {
+      return Left(ServerFailure('Failed to fetch expense: $e'));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> deleteExpense(String expenseId) async {
     try {
       final result = await expenseApiService.deleteExpense(expenseId);

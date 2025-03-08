@@ -8,4 +8,5 @@ abstract class BudgetRepository {
   Future<Either<Failure, BudgetModel>> getBudgetById(String budgetId);
   Future<Either<Failure, BudgetModel>> updateBudget(BudgetModel Budget);
   Future<Either<Failure, void>> deleteBudget(String budgetId);
+  Future<Either<Failure, BudgetModel>> getBudgetByCategory(String categoryId);
 }

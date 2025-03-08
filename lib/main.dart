@@ -1,3 +1,9 @@
+import 'package:expense_tracker/features/presentation/blocs/profile/Profile_bloc.dart';
+import 'package:expense_tracker/features/presentation/pages/old/budget_page.dart';
+import 'package:expense_tracker/features/presentation/pages/old/expense_pages/expense_page.dart';
+import 'package:expense_tracker/features/presentation/pages/old/profile_page.dart';
+import 'package:expense_tracker/features/presentation/widgets/bloc/navigation_bloc.dart';
+import 'package:expense_tracker/features/presentation/widgets/button_cubit/button_cubit.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,16 +50,26 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AuthStateCubit()..appStarted(),
         ),
+        BlocProvider(create: (context) => sl<NavigationBloc>()),
         BlocProvider(
           create: (context) => UserDisplayCubit()..displayUser(),
         ),
         BlocProvider(create: (context) => sl<ExpenseBloc>()),
         BlocProvider(create: (context) => sl<BudgetBloc>()),
+        BlocProvider(create: (context) => sl<ProfileBloc>()),
+        BlocProvider(
+          create: (context) => ButtonStateCubit(),
+        ),
       ],
       child: MaterialApp(
+          initialRoute: '/',
           // theme: AppTheme.appTheme,
           routes: {
             '/add_budget': (context) => AddBudgetPage(),
+            '/budgets': (context) => BudgetPage(),
+            '/expenses': (context) => ExpensePage(),
+            '/home': (context) => HomePage(),
+            '/profile': (context) => ProfileScreen(),
             '/edit_budget': (context) => UpdateBudgetScreen(
                   budget:
                       ModalRoute.of(context)!.settings.arguments as BudgetModel,
@@ -93,6 +109,7 @@ class MyApp extends StatelessWidget {
             }
             return null; // Let the routes table handle other routes
           },
+          navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           home: BlocBuilder<AuthStateCubit, AuthState>(
             builder: (context, state) {

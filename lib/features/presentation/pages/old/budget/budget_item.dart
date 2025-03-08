@@ -46,7 +46,7 @@ class BudgetItem extends StatelessWidget {
               onPressed: () {
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: onEdit,
+                  onPressed: onDelete,
                 );
                 // Show confirmation dialog
                 showDialog(

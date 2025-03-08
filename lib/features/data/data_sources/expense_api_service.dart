@@ -12,6 +12,7 @@ abstract class ExpenseApiService {
   Future<Either<String, dynamic>> updateExpense(ExpenseModel expense);
   Future<Either<String, dynamic>> deleteExpense(String expenseId);
   Future<Either<String, dynamic>> getExpenseById(String expenseId);
+  Future<Either<String, dynamic>> getExpenseByCategory(String expenseId);
 }
 
 class ExpenseApiServiceImpl extends ExpenseApiService {
@@ -106,6 +107,26 @@ class ExpenseApiServiceImpl extends ExpenseApiService {
 
       final response = await sl<DioClient>().get(
         '${ApiUrls.getExpenseById}/$expenseId',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+
+      return Right(response.data);
+    } on DioException catch (e) {
+      return Left(e.response?.data?['message']?.toString() ??
+          e.message ??
+          "An error occurred");
+    }
+  }
+
+  @override
+  Future<Either<String, dynamic>> getExpenseByCategory(
+      String CategoryId) async {
+    try {
+      final token = await _getToken();
+      if (token == null) return Left("Token not found");
+
+      final response = await sl<DioClient>().get(
+        '${ApiUrls.getExpenseById}/$CategoryId',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 

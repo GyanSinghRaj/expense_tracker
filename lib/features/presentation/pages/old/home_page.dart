@@ -1,3 +1,5 @@
+import 'package:expense_tracker/features/presentation/blocs/expense/expense_bloc.dart';
+import 'package:expense_tracker/features/presentation/blocs/expense/expense_state.dart';
 import 'package:expense_tracker/features/presentation/blocs/user/user_display_cubit.dart';
 import 'package:expense_tracker/features/presentation/blocs/user/user_display_state.dart';
 import 'package:expense_tracker/features/presentation/pages/old/signup_page.dart';
@@ -71,8 +73,6 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-
-                    
                     SizedBox(
                       height: 250,
                       child: PieChart(
@@ -88,18 +88,33 @@ class _HomePageState extends State<HomePage> {
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.bold)),
                     Expanded(
-                      child: ListView(
-                        children: [
-                          CategoryCard(
-                              'Utilities', '\$547.84', 34, Colors.orange),
-                          CategoryCard(
-                              'Expenses', '\$194.29', 12, Colors.green),
-                          CategoryCard('Payments', '\$348.0', 20, Colors.blue),
-                          CategoryCard(
-                              'Subscriptions', '\$96.52', 8, Colors.purple),
-                        ],
+                      child: BlocBuilder<ExpenseBloc, ExpenseState>(
+                        builder: (context, state) {
+                          if (state is ExpenseLoadingState) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state is ExpenseLoadedState) {
+                            return ListView.builder(
+                              itemCount: state.expenses.length,
+                              itemBuilder: (context, index) {
+                                final expense = state.expenses[index];
+                                return CategoryCard(
+                                  expense.categoryId,
+                                  '\$${expense.amount.toStringAsFixed(2)}',
+                                  0, // Replace with actual percentage if available
+                                  Colors
+                                      .orange, // Replace with actual color if available
+                                );
+                              },
+                            );
+                          } else if (state is ExpenseErrorState) {
+                            return Center(
+                                child: Text('Error: ${state.message}'));
+                          }
+                          return Container();
+                        },
                       ),
-                    )
+                    ),
                   ],
                 ),
               );

@@ -28,6 +28,15 @@ class UpdateExpenseEvent extends ExpenseEvent {
   List<Object?> get props => [expense];
 }
 
+class FetchExpensesByCategoryEvent extends ExpenseEvent {
+  final String categoryId;
+
+  const FetchExpensesByCategoryEvent(this.categoryId);
+
+  @override
+  List<Object> get props => [categoryId];
+}
+
 class DeleteExpenseEvent extends ExpenseEvent {
   final String expenseId;
 

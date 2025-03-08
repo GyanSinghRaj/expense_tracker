@@ -18,6 +18,7 @@ import 'package:expense_tracker/features/domain/usecases/budget/get_budgets.dart
 import 'package:expense_tracker/features/domain/usecases/budget/update_budget.dart';
 import 'package:expense_tracker/features/domain/usecases/expenses/create_epense.dart';
 import 'package:expense_tracker/features/domain/usecases/expenses/delete_epense.dart';
+import 'package:expense_tracker/features/domain/usecases/expenses/get_expense_by_category.dart';
 import 'package:expense_tracker/features/domain/usecases/expenses/get_expenses.dart';
 import 'package:expense_tracker/features/domain/usecases/expenses/update_expense.dart';
 import 'package:expense_tracker/features/domain/usecases/user/get_user.dart';
@@ -27,6 +28,8 @@ import 'package:expense_tracker/features/domain/usecases/user/sign_in.dart';
 import 'package:expense_tracker/features/domain/usecases/user/sign_up.dart';
 import 'package:expense_tracker/features/presentation/blocs/budget/budget_bloc.dart';
 import 'package:expense_tracker/features/presentation/blocs/expense/expense_bloc.dart';
+import 'package:expense_tracker/features/presentation/blocs/profile/Profile_bloc.dart';
+import 'package:expense_tracker/features/presentation/widgets/bloc/navigation_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
@@ -68,14 +71,19 @@ void setupServiceLocator() {
         updateBudget: sl<UpdateBudget>(),
         deleteBudget: sl<DeleteBudget>(),
       ));
+  sl.registerFactory(() => NavigationBloc());
+
+  sl.registerFactory(() => ProfileBloc());
 
   // Expense use cases
   sl.registerSingleton<DeleteExpense>(DeleteExpense());
   sl.registerSingleton<CreateExpense>(CreateExpense());
   sl.registerSingleton<UpdateExpense>(UpdateExpense());
   sl.registerSingleton<GetExpenses>(GetExpenses());
+  sl.registerSingleton<GetExpenseByCategory>(GetExpenseByCategory());
 
   sl.registerFactory(() => ExpenseBloc(
+        getExpensesByCategory: sl<GetExpenseByCategory>(),
         getExpenses: sl<GetExpenses>(),
         addExpense: sl<CreateExpense>(),
         updateExpense: sl<UpdateExpense>(),

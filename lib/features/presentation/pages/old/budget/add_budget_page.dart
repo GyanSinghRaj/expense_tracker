@@ -92,20 +92,20 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
         return;
       }
       final newBudget = BudgetModel(
-        userId: userId,
-        amount: double.parse(_amountController.text),
-        budgetId: budgetId,
-        startDate: _startDate!,
-        endDate: _startDate!,
-        categoryId: _selectedCategory!,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now()
-      );
+          userId: userId,
+          amount: double.parse(_amountController.text),
+          budgetId: budgetId,
+          startDate: _startDate!,
+          endDate: _startDate!,
+          categoryId: _selectedCategory!,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now());
       context.read<BudgetBloc>().add(AddBudgetEvent(newBudget));
 
       setState(() {
         _amountController.clear();
       });
+      // Navigator.pushNamed(context, '/');
       Navigator.pop(context);
     }
   }

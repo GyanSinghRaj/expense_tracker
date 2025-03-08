@@ -12,6 +12,7 @@ abstract class BudgetApiService {
   Future<Either<String, dynamic>> updateBudget(BudgetModel budget);
   Future<Either<String, dynamic>> deleteBudget(String budgetId);
   Future<Either<String, dynamic>> getBudgetById(String budgetId);
+  Future<Either<String, dynamic>> getBudgetByCategory(String categoryId);
 }
 
 class BudgetApiServiceImpl extends BudgetApiService {
@@ -99,6 +100,23 @@ class BudgetApiServiceImpl extends BudgetApiService {
 
       final response = await sl<DioClient>().get(
         '${ApiUrls.getBudgetById}/$budgetId',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+
+      return Right(response.data);
+    } on DioException catch (e) {
+      return Left(e.response?.data['message'] ?? 'An error occurred');
+    }
+  }
+
+  @override
+  Future<Either<String, dynamic>> getBudgetByCategory(String categoryId) async {
+    try {
+      final token = await _getToken();
+      if (token == null) return Left("Token not found");
+
+      final response = await sl<DioClient>().get(
+        '${ApiUrls.getBudgetById}/$categoryId',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 

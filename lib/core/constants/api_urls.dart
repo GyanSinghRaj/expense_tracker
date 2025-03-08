@@ -1,5 +1,6 @@
 class ApiUrls {
-  static const baseURL = 'http://192.168.100.126:8000/';
+  // static const baseURL = 'http://192.168.100.126:8000/';
+  static const baseURL = 'http://localhost:8000/';
 
   // static const baseURL = 'http://192.168.1.92:8000/';
   // static const baseURL = 'http://192.168.36.10:8000/';

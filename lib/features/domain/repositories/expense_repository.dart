@@ -9,4 +9,6 @@ abstract class ExpenseRepository {
   Future<Either<Failure, ExpenseModel>> getExpenseById(String budgetId);
   Future<Either<Failure, ExpenseModel>> updateExpense(ExpenseModel expense);
   Future<Either<Failure, void>> deleteExpense(String budgetId);
+  Future<Either<Failure, List<ExpenseModel>>> getExpenseByCategory(
+      String categoryId);
 }

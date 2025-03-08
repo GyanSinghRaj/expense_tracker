@@ -60,6 +60,20 @@ class BudgetRepositoryImpl extends BudgetRepository {
   }
 
   @override
+  Future<Either<Failure, BudgetModel>> getBudgetByCategory(
+      String categoryId) async {
+    try {
+      final result = await budgetApiService.getBudgetById(categoryId);
+      return result.fold(
+        (error) => Left(ServerFailure(error)),
+        (data) => Right(BudgetModel.fromJson(data)),
+      );
+    } catch (e) {
+      return Left(ServerFailure('Failed to fetch budget: $e'));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> deleteBudget(String budgetId) async {
     try {
       final result = await budgetApiService.deleteBudget(budgetId);

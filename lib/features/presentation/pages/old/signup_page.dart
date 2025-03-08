@@ -34,6 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
             if (state is ButtonSuccessState) {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const HomePage()));
+              Navigator.pushNamed(context, '/login');
             }
             if (state is ButtonFailureState) {
               var snackBar = SnackBar(content: Text(state.errorMessage));
@@ -202,12 +203,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 return;
               }
 
-              context.read<ButtonStateCubit>().excute(
+              context.read<ButtonStateCubit>().execute(
                   usecase: sl<SignupUseCase>(),
                   params: SignupReqParams(
                       email: email, password: password, username: username));
             }
-            
           });
     });
   }
